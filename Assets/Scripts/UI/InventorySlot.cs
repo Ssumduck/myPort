@@ -9,6 +9,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField]
     GameObject popup;
 
+    [SerializeField]
     Item slotItem = null;
     [SerializeField]
     Image slot;
@@ -18,15 +19,16 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     
     public Sprite slotBackground;
 
+    [SerializeField]
     Text countText;
 
     GraphicRaycaster gr;
 
     public void Init()
     {
-        countText = transform.GetChild(2).GetComponent<Text>();
+        countText = transform.GetComponentInChildren<Text>();
         gr = GameObject.Find("UI").GetComponent<GraphicRaycaster>();
-        slot = transform.GetChild(1).GetComponent<Image>();
+        slot = transform.Find("ItemIcon").GetComponent<Image>();
     }
 
     public void SlotInit(Item item)
