@@ -1,0 +1,2 @@
+INDEX	ItemLV	EquipType	Name	Explain	Price	HP	HPRecovery	MP	MPRecovery	STR	DEX	INT	LUK	AD	AP	DEF	MR
+800001	0	Weapon	기본 검	AD를 5 올려주는 검이다.	5000	0	0	0	0	0	0	0	0	5	0	0	0

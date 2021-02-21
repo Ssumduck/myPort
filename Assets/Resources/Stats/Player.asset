@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f523503b0d11641aa575a38c5c7c9a, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  name: "\uC8FC\uC778\uACF5"
+  lv: 1
+  gold: 500
+  hp: 50
+  hpRecovery: 1
+  mp: 50
+  mpRecovery: 1
+  str: 10
+  dex: 10
+  Int: 10
+  luk: 10
+  ad: 5
+  ap: 5
+  def: 1
+  mr: 1
+  exp: 50
+  currexp: 0
+  statPoint: 0
+  skillPoint: 0
+  atktime: 3
+  atkDistance: 3
+  movespeed: 3
+  moveTime: 0
+  dieanimationTime: 0
+  dieElapsed: 0
+  spawnTime: 0
+  moveDuration: 0

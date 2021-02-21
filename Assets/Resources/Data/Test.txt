@@ -1,0 +1,6 @@
+ID	BOX	PORTRAIT	TYPING	FONT	ISCHOICE	CONTEXT
+friendly1	1	2	3	4	5	흠
+friendly2	1	2	3	4	5	흠
+friendly3	1	2	3	4	5	흠
+friendly4	1	2	3	4	5	흠
+friendly5	1	2	3	4	5	흠

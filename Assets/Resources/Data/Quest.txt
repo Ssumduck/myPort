@@ -1,0 +1,3 @@
+﻿QuestIndex	NPC	QuestName	QuestExplain	TYPE	Level	prevQuest	DestNPC	Gold	Item	ItemCount	Exp
+1001	1001	기본퀘스트(말 걸기)	레드에게 말걸기	TALK	1	0	1001	50	800001	1	50
+1002	1001	기본퀘스트(말 걸기 2)	블루에게 말걸기	TALK	1	1001	1002	50			50

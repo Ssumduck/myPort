@@ -1,0 +1,3 @@
+ItemIndex	ITEMTYPE	NAME	EXPLAIN	PRICE	MaxCount	currHP	HP	HPRecovery	currMP	MP	MPRecovery	STR	DEX	INT	LUK	AD	AP	DEF	MR
+900001	Use	빨간 포션	빨간 포션이다. 사용시 체력이 50 회복된다.	1	99	50	0	0	0	0	0	0	0	0	0	0	0	0	0
+910001	Use	파란 포션	파란 포션이다. 사용시 마나가 50 회복된다.	1	99	0	0	0	50	0	0	0	0	0	0	0	0	0	0
