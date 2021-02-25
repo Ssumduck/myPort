@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraController : MonoBehaviour, IPointerDownHandler
+public class CameraController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     bool ui = false;
     Vector3 prevAngle;
@@ -73,5 +73,9 @@ public class CameraController : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         ui = EventSystem.current.IsPointerOverGameObject();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
     }
 }
