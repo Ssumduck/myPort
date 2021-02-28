@@ -89,12 +89,23 @@ public class SaveData : MonoBehaviour
 
         skillIndex = player.mySkillReturns().Item1;
         skillLevel = player.mySkillReturns().Item2;
+
+        Debug.Log("초기화 완료");
     }
 
     void Save()
     {
+        FileStream file;
+        if(File.Exists(Application.persistentDataPath + "/SaveData/SaveFile.txt"))
+        {
+            file = new FileStream(Application.persistentDataPath + "/SaveData/SaveFile.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            goto FileFind;
+        }
+
         Directory.CreateDirectory(Application.persistentDataPath + "/" + "SaveData");
-        FileStream file = new FileStream(Application.persistentDataPath + "/" + "SaveData/SaveFile.txt", FileMode.Create, FileAccess.Write);
+        file = new FileStream(Application.persistentDataPath + "/" + "SaveData/SaveFile.txt", FileMode.Create, FileAccess.Write);
+
+        FileFind:
 
         StreamWriter sw = new StreamWriter(file, Encoding.UTF8);
 
@@ -142,6 +153,8 @@ public class SaveData : MonoBehaviour
 
         sw.Close();
         sw.Dispose();
+
+        Debug.Log("저장 완료");
     }
 
     public void LoadFunc()
@@ -228,7 +241,6 @@ public class SaveData : MonoBehaviour
                         {
                             _player.myStat.Level = int.Parse(data[1]);
                             _player.transform.position = new Vector3(float.Parse(data[18]), float.Parse(data[19]), float.Parse(data[20]));
-                            Destroy(gameObject);
                             yield break;
                         }
                         else

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Stat")]
 public class Stat : ScriptableObject
 {
+    public Sprite spr;
     public string myName;
     public int index;
     public int lv;
@@ -39,6 +40,7 @@ public class Stat : ScriptableObject
 [System.Serializable]
 public class MyStat
 {
+    public Sprite spr;
     public string Name;
     public int index;
     public int Level;
@@ -100,5 +102,6 @@ public class MyStat
         dieanimationTime = stat.dieanimationTime;
         moveDuration = stat.moveDuration;
         index = stat.index;
+        spr = stat.spr;
     }
 }

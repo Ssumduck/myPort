@@ -20,4 +20,9 @@ public class UIButton : MonoBehaviour
         go.SetActive(true);
         go.transform.SetAsLastSibling();
     }
+
+    public void ApplicationQuit()
+    {
+        Application.Quit();
+    }
 }

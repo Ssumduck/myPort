@@ -6,6 +6,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
+    GameObject targetUI;
+
+    [SerializeField]
     Stat stat;
     
     public MyStat myStat;
@@ -39,7 +42,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     Define.PlayerState state = Define.PlayerState.Idle;
 
-    Monster attackTarget;
+    public Monster attackTarget;
     public NPC nearNPC;
 
     public List<Quest> myQuest = new List<Quest>();
@@ -117,9 +120,14 @@ public class Player : MonoBehaviour
             Managers.Sound.SFXPlay("Player_Attack_NonTarget");
             return;
         }
-        Managers.Sound.SFXPlay($"{attackTarget.myStat.Name}_Hit");
+
+        int rand = UnityEngine.Random.Range(0, 100);
+
+        if(rand > 80)
+            Managers.Sound.SFXPlay($"{attackTarget.myStat.Name}_Hit");
 
         attackTarget.SendMessage("Hit", this);
+        targetUI.SetActive(true);
     }
 
     void Attack()
@@ -169,9 +177,6 @@ public class Player : MonoBehaviour
         {
             if (Vector3.Distance(monsters[i].transform.position, transform.position) <= stat.atkDistance)
             {
-                Debug.Log(Vector3.Distance(monsters[i].transform.position, transform.position));
-                Debug.Log(Vector3.Distance(transform.position, monsters[i].transform.position));
-
                 if (attackTarget == null)
                     attackTarget = monsters[i];
                 else

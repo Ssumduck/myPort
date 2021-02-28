@@ -5,14 +5,14 @@ using UnityEngine;
 public class Warlock : Monster
 {
     float elapsedTime = 0f;
-    
+
     protected override void Idle()
     {
         anim.SetBool("Move", false);
 
         elapsedTime += Time.deltaTime;
 
-        if(elapsedTime > myStat.moveTime)
+        if (elapsedTime > myStat.moveTime)
         {
             elapsedTime = 0f;
 
@@ -35,7 +35,7 @@ public class Warlock : Monster
         float distance = Vector3.Distance(patrolVec, transform.position);
 
 
-        if(distance <= 0.2f || elapsedTime > 4f)
+        if (distance <= 0.2f || elapsedTime > 4f)
         {
             elapsedTime = 0f;
             state = Define.MonsterState.Idle;
@@ -55,11 +55,11 @@ public class Warlock : Monster
         FloatingText.DamageText(textTransform, dmg.ToString(), Color.white);
 
         attackTarget = player;
-        if(state != Define.MonsterState.Attack)
+        if (state != Define.MonsterState.Attack)
             state = Define.MonsterState.Trace;
 
         DieCheck();
-        if(!isAlive)
+        if (!isAlive)
         {
             player.myStat.currEXP += myStat.currEXP;
         }
@@ -98,7 +98,7 @@ public class Warlock : Monster
             {
                 myStat.moveElapsed += Time.deltaTime;
 
-                if(myStat.moveElapsed > myStat.moveDuration)
+                if (myStat.moveElapsed > myStat.moveDuration)
                 {
                     myStat.moveElapsed = 0f;
                     canMove = false;
@@ -128,10 +128,10 @@ public class Warlock : Monster
             myStat.moveElapsed = 0f;
         }
 
-            if (canAttack)
+        if (canAttack)
         {
             canAttack = false;
-            anim.SetBool("Attack", true);
+            anim.SetTrigger("Attack");
             attackTarget.Hit(this);
         }
     }

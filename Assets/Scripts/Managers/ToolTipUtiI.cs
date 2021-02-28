@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ToolTipManager
 {
     GameObject go;
+    GameObject systemGo;
 
     public void Init()
     {
@@ -16,7 +17,6 @@ public class ToolTipManager
     public void ToolTipCreate(Transform tf, Define.TooltipType type, Item item = null, Skill skill = null)
     {
         Tooltip tooltip = Managers.Instantiate(Managers.Tooltip.go, tf.parent.parent).GetComponent<Tooltip>();
-
         tooltip.type = type;
 
         tooltip.nameTxt = tooltip.transform.GetChild(0).GetComponent<Text>();
@@ -45,9 +45,9 @@ public class ToolTipManager
 
     public void SystemToolTip(string title, string context)
     {
-        go = Object.Instantiate<GameObject>(Resources.Load("Prefabs/UI/PopupCanvas") as GameObject);
+        systemGo = Object.Instantiate<GameObject>(Resources.Load("Prefabs/UI/PopupCanvas") as GameObject);
 
-        Transform parent = go.transform.GetChild(0);
+        Transform parent = systemGo.transform.GetChild(0);
 
         parent.GetChild(0).GetComponent<Text>().text = title;
         parent.GetChild(1).GetComponent<Text>().text = context;
