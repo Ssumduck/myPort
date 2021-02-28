@@ -30,6 +30,8 @@ public class Monster : MonoBehaviour
 
     protected bool canMove = false, canAttack = false;
 
+    protected float elapsedTime = 0f;
+
     bool dieTrigger = false;
 
 
@@ -55,6 +57,13 @@ public class Monster : MonoBehaviour
             patrolVec.y -= gravity * Time.deltaTime;
         }
 
+        if (!canAttack)
+        {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime > myStat.atkTime)
+                canAttack = true;
+        }
+
         switch (state)
         {
             case Define.MonsterState.Idle:
@@ -62,6 +71,9 @@ public class Monster : MonoBehaviour
                 break;
             case Define.MonsterState.Patrol:
                 Patrol();
+                break;
+            case Define.MonsterState.Moving:
+                Moving();
                 break;
             case Define.MonsterState.Trace:
                 Trace();

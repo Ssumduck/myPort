@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     bool alive = true;
     public bool isGround = true;
     public bool canMove = true;
+    public bool defence = false;
     bool atkCheck = false;
 
     float gravity = 9.81f;
@@ -74,6 +75,8 @@ public class Player : MonoBehaviour
             go.SetActive(false);
         }
 
+        anim.SetBool("Defence", defence);
+
         switch (state)
         {
             case Define.PlayerState.Idle:
@@ -93,6 +96,7 @@ public class Player : MonoBehaviour
 
     void Idle()
     {
+        anim.SetBool("Defence", false);
         anim.SetBool("Move", false);
     }
 

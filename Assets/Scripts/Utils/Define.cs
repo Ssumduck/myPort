@@ -9,6 +9,7 @@ public class Define
     {
         None,
         Warlock,
+        Drake,
     }
     public enum PlayerState
     {
@@ -16,6 +17,7 @@ public class Define
         Moving,
         Attack,
         Die,
+        Defence,
     }
 
     public enum MonsterState
@@ -115,6 +117,18 @@ public class Define
     {
         NONE,
         ITEM,
-        SKILL
+        SKILL,
+        DUNGEON,
+    }
+
+    public enum CloseBtn
+    {
+        ACTIVE,
+        DESTROY,
+    }
+
+    public enum Debuff
+    {
+
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
-    [SerializeField]
     Player player;
     [SerializeField]
     Text text, HPText, MPText, EXPText;
@@ -14,6 +13,9 @@ public class PlayerStatus : MonoBehaviour
 
     void Init()
     {
+        if (player == null)
+            player = GameDataManager.player;
+
         text.text = $"LV {player.myStat.Level} : {player.myStat.Name}";
 
         HPText.text = $"{player.myStat.currHP}/{player.myStat.HP}";

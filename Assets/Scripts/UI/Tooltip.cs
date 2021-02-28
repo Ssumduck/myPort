@@ -73,6 +73,14 @@ public class Tooltip : MonoBehaviour
                 data.Add(skill.Type);
                 btn0.onClick.AddListener(() => SkillUtil.SkillLevelUp(skill));
                 break;
+            case Define.TooltipType.DUNGEON:
+                data.Add("보스 입장");
+                data.Add("보스방에 입장하시겠습니까?");
+                data.Add("TYPE");
+                applyTxt.text = "입장";
+                btn0.onClick.AddListener(() => GameObject.FindObjectOfType<BossContent>().BossRoom());
+                transform.localPosition = Vector3.zero;
+                break;
         }
 
         nameTxt.text = data[0];

@@ -17,12 +17,15 @@ public class GameDataManager
 
     public void Init()
     {
-        player = GameObject.FindObjectOfType<Player>();
+        if (player == null)
+        {
+            player = GameObject.FindObjectOfType<Player>();
 
-        ItemInit();
-        QuestInit();
-        ShopDataInit();
-        SkillDataInit();
+            ItemInit();
+            QuestInit();
+            ShopDataInit();
+            SkillDataInit();
+        }
     }
 
     void ItemInit()

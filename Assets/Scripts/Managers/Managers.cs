@@ -16,6 +16,7 @@ public class Managers : MonoBehaviour
     static ToolTipManager tooltip = new ToolTipManager();
     public static ToolTipManager Tooltip { get { instance.Init(); return tooltip; } }
 
+
     public void Init()
     {
         if(instance == null)

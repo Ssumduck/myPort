@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Warlock : Monster
 {
-    float elapsedTime = 0f;
-
     protected override void Idle()
     {
         anim.SetBool("Move", false);

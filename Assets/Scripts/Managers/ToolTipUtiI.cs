@@ -5,18 +5,27 @@ using UnityEngine.UI;
 
 public class ToolTipManager
 {
+    Canvas canvas;
     GameObject go;
     GameObject systemGo;
 
     public void Init()
     {
-        if(go == null)
+        if (go == null)
+        {
             go = Resources.Load<GameObject>("Prefabs/UI/Tooltip");
+            canvas = Resources.Load<Canvas>("EmptyCanvas");
+        }
     }
 
     public void ToolTipCreate(Transform tf, Define.TooltipType type, Item item = null, Skill skill = null)
     {
         Tooltip tooltip = Managers.Instantiate(Managers.Tooltip.go, tf.parent.parent).GetComponent<Tooltip>();
+        if(tooltip.transform.root.GetComponent<Canvas>() == null)
+        {
+            canvas = Managers.Instantiate(canvas);
+            tooltip.transform.SetParent(canvas.transform);
+        }
         tooltip.type = type;
 
         tooltip.nameTxt = tooltip.transform.GetChild(0).GetComponent<Text>();
