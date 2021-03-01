@@ -129,6 +129,7 @@ public class Define
 
     public enum Debuff
     {
+        Mezz,
 
     }
 }
