@@ -5,6 +5,12 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     [SerializeField]
+    float currMP, MP;
+    public float dotTime;
+    public int dotDmg;
+    protected bool channeling = false;
+
+    [SerializeField]
     Stat stat;
     protected float gravity = 9.81f;
     public MyStat myStat;
@@ -17,7 +23,7 @@ public class Monster : MonoBehaviour
 
     protected CharacterController controller;
     [SerializeField]
-    protected Transform textTransform;
+    public Transform textTransform;
 
     [SerializeField]
     protected Define.MonsterState state = Define.MonsterState.Idle;
@@ -33,6 +39,9 @@ public class Monster : MonoBehaviour
     protected float elapsedTime = 0f;
 
     bool dieTrigger = false;
+
+    public Define.MonsterState State { get { return state; } set { state = value; } }
+    public Player AttackTarget { set { attackTarget = value; } }
 
 
     private void OnEnable()
@@ -52,7 +61,7 @@ public class Monster : MonoBehaviour
             return;
         }
 
-        if(!controller.isGrounded)
+        if (!controller.isGrounded)
         {
             patrolVec.y -= gravity * Time.deltaTime;
         }
@@ -60,8 +69,23 @@ public class Monster : MonoBehaviour
         if (!canAttack)
         {
             elapsedTime += Time.deltaTime;
+
             if (elapsedTime > myStat.atkTime)
+            {
+                elapsedTime = 0f;
                 canAttack = true;
+            }
+        }
+
+        if(type == Define.MonsterType.Drake && state != Define.MonsterState.Idle && !channeling)
+        {
+            currMP += Time.deltaTime;
+
+            if (currMP > MP)
+            {
+                currMP = 0;
+                state = Define.MonsterState.SKILL;
+            }
         }
 
         switch (state)
@@ -81,19 +105,67 @@ public class Monster : MonoBehaviour
             case Define.MonsterState.Attack:
                 Attack();
                 break;
+            case Define.MonsterState.TRAP:
+                Trap();
+                break;
+            case Define.MonsterState.SKILL:
+                Skill();
+                break;
         }
     }
+
+    protected virtual void Skill() { }
 
     protected virtual void Idle() { }
     protected virtual void Moving() { }
     protected virtual void Attack() { }
     protected virtual void Patrol() { }
     protected virtual void Trace() { }
-    protected virtual void Hit(Player player) { }
+    protected virtual void Hit(Player player)
+    {
+        int dmg = player.myStat.AD - myStat.DEF;
+
+        myStat.currHP -= dmg;
+        anim.SetTrigger("Hit");
+        FloatingText.DamageText(textTransform, dmg.ToString(), Color.white);
+
+        attackTarget = player;
+        if (state != Define.MonsterState.Attack)
+            state = Define.MonsterState.Trace;
+
+        DieCheck();
+        if (!isAlive)
+        {
+            player.myStat.currEXP += myStat.currEXP;
+        }
+    }
+
+    public virtual void Hit(Player player, Define.DOTType type)
+    {
+        Hit(player);
+
+        if (type == Define.DOTType.NONE)
+            return;
+        DotDamage dot;
+
+        dot = GetComponent<DotDamage>();
+        if (dot == null)
+            dot = gameObject.AddComponent<DotDamage>();
+
+        dot.Init(player.dotDmg, player.dotTime, type);
+    }
+
+    public virtual void Trap()
+    {
+        if (attackTarget == null)
+            attackTarget = GameObject.FindObjectOfType<Player>();
+        GameObject effect = Instantiate(Resources.Load("Particle/MonsterSpawn") as GameObject, transform);
+        state = Define.MonsterState.Trace;
+    }
 
     protected void DieCheck()
     {
-        if(myStat.currHP <= 0)
+        if (myStat.currHP <= 0)
         {
             isAlive = false;
             return;
@@ -112,7 +184,7 @@ public class Monster : MonoBehaviour
         {
             myStat.dieElapsed += Time.deltaTime;
 
-            if(myStat.dieElapsed > myStat.dieanimationTime)
+            if (myStat.dieElapsed > myStat.dieanimationTime)
             {
                 MonsterPool.DieMonster(this);
                 attackTarget.LevelUp();

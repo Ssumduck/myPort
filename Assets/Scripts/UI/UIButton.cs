@@ -11,6 +11,10 @@ public class UIButton : MonoBehaviour
     public void CloseButton()
     {
         GameObject go = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
+
+        if (go.transform.GetComponentInChildren<Tooltip>() != null)
+            Destroy(go.transform.GetComponentInChildren<Tooltip>().gameObject);
+
         go.SetActive(false);
     }
 

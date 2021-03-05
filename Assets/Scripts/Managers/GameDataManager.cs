@@ -148,7 +148,7 @@ public class GameDataManager
 
 
             Skill skill = new Skill(int.Parse(data[0]), int.Parse(data[1]), int.Parse(data[2]), (Define.SkillType)Enum.Parse(typeof(Define.SkillType), data[3]), 
-                                    data[4], data[5], stats, ratios, float.Parse(data[8]) );
+                                    data[4], data[5], stats, ratios, float.Parse(data[8]), data[9], float.Parse(data[10]), float.Parse(data[11]), float.Parse(data[12]));
 
             SkillData.Add(skill.Index, skill);
             SkillSlotData.Add(skill.SlotIndex, skill);

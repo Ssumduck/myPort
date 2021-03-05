@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    CameraController con;
     bool drag;
 
     RectTransform rectBackground;
@@ -21,6 +22,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     private void Awake()
     {
+        con = GameObject.FindObjectOfType<CameraController>();
         rectBackground = GetComponent<RectTransform>();
         rectJoystick = transform.GetChild(0).GetComponent<RectTransform>();
 
@@ -31,11 +33,13 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        con.ui = true;
         drag = true;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        con.ui = false;
         drag = false;
         rectJoystick.localPosition = Vector3.zero;
         moveVec = Vector3.zero;

@@ -44,25 +44,6 @@ public class Warlock : Monster
         controller.Move(vec * myStat.moveSpeed * Time.deltaTime);
     }
 
-    protected override void Hit(Player player)
-    {
-        int dmg = player.myStat.AD - myStat.DEF;
-
-        myStat.currHP -= dmg;
-        anim.SetTrigger("Hit");
-        FloatingText.DamageText(textTransform, dmg.ToString(), Color.white);
-
-        attackTarget = player;
-        if (state != Define.MonsterState.Attack)
-            state = Define.MonsterState.Trace;
-
-        DieCheck();
-        if (!isAlive)
-        {
-            player.myStat.currEXP += myStat.currEXP;
-        }
-    }
-
     protected override void Trace()
     {
         if (attackTarget == null)
@@ -118,22 +99,15 @@ public class Warlock : Monster
         else if (Vector3.Distance(attackTarget.transform.position, transform.position) > myStat.atkDistance)
             state = Define.MonsterState.Trace;
 
-        myStat.moveElapsed += Time.deltaTime;
-
-        if (myStat.moveElapsed > myStat.atkTime)
-        {
-            canAttack = true;
-            myStat.moveElapsed = 0f;
-        }
-
         if (canAttack)
         {
             canAttack = false;
+            transform.LookAt(attackTarget.transform);
+            anim.SetBool("Move", false);
             anim.SetTrigger("Attack");
             attackTarget.Hit(this);
         }
     }
-
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.gameObject.CompareTag("Wall"))

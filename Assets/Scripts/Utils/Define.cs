@@ -28,6 +28,8 @@ public class Define
         Trace,
         Attack,
         Die,
+        TRAP,
+        SKILL,
     }
 
     public enum ItemType
@@ -90,6 +92,7 @@ public class Define
         Active,
         Passive,
         Channeling,
+        Enchant,
     }
 
     public enum Stat
@@ -105,6 +108,7 @@ public class Define
         AP,
         DEF,
         MR,
+        FIRE,
     }
 
     public enum DamageType
@@ -119,6 +123,7 @@ public class Define
         ITEM,
         SKILL,
         DUNGEON,
+        DIE,
     }
 
     public enum CloseBtn
@@ -127,9 +132,16 @@ public class Define
         DESTROY,
     }
 
-    public enum Debuff
+    public enum DOTType
     {
-        Mezz,
+        NONE,
+        BURN,
+        POISON,
+    }
 
+    public enum TrapType
+    {
+        NONE,
+        SPAWN,
     }
 }

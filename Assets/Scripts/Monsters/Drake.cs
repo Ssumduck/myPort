@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Drake : Monster
 {
+    [SerializeField]
+    AnimationClip clip;
+    [SerializeField]
+    Transform skill_effect;
+
+
+
     private void Start()
     {
         type = Define.MonsterType.Drake;
-    }
-
-    protected override void Hit(Player player)
-    {
-        attackTarget = player;
     }
 
     protected override void Idle()
@@ -29,6 +31,10 @@ public class Drake : Monster
         if(distance > myStat.atkDistance)
         {
             state = Define.MonsterState.Moving;
+        }
+        else
+        {
+            state = Define.MonsterState.Attack;
         }
     }
 
@@ -57,8 +63,43 @@ public class Drake : Monster
         {
             canAttack = false;
             anim.SetBool("Move", false);
+            transform.LookAt(attackTarget.transform);
             anim.SetTrigger("Attack");
+            attackTarget.Hit(this);
             state = Define.MonsterState.Trace;
         }
+        else
+        {
+            state = Define.MonsterState.Trace;
+        }
+    }
+
+    protected override void Skill()
+    {
+        StartCoroutine(SkillCoroutine());
+    }
+
+    IEnumerator SkillCoroutine()
+    {
+        if (!channeling)
+        {
+            channeling = true;
+            anim.SetBool("Move", false);
+            anim.SetTrigger("Skill");
+            transform.LookAt(attackTarget.transform);
+
+            if (myStat.atkDistance >= Vector3.Distance(transform.position, attackTarget.transform.position))
+            {
+                attackTarget.Hit(this, Define.DOTType.BURN);
+            }
+
+            GameObject go = Instantiate(Resources.Load("SkillParticle/Drake") as GameObject, skill_effect);
+            Destroy(go, clip.length);
+            yield return new WaitForSeconds(clip.length);
+        }
+
+        channeling = false;
+
+        state = Define.MonsterState.Trace;
     }
 }

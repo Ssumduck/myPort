@@ -17,7 +17,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < slots.transform.childCount; i++)
         {
-            Image slot = slots.transform.GetChild(i).GetChild(1).GetComponent<Image>();
+            Image slot = slots.transform.GetChild(i).Find("ItemIcon").GetComponent<Image>();
             InventorySlot Slot = slot.transform.parent.GetComponent<InventorySlot>();
             Slot.slotBackground = defaultSprite;
             slot.sprite = defaultSprite;

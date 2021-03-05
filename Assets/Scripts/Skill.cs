@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class Skill
 {
+    Transform tf;
+
     int slotIndex;
     int index;
     int prevIndex;
-    Define.SkillType type = Define.SkillType.NONE;
+    public Define.SkillType type = Define.SkillType.NONE;
     string name;
     string explain;
     List<Define.Stat> stats = new List<Define.Stat>();
     List<float> ratios = new List<float>();
     float time;
     bool buff = false;
+    float effect_x, effect_y, effect_z;
 
     public int Index { get { return index; } }
     public int PrevIndex { get { return prevIndex; } }
@@ -36,12 +39,18 @@ public class Skill
                     return "채널링";
             }
             return type.ToString();
-        } 
+        }
     }
     public bool Buff { get { return buff; } set { buff = value; } }
 
+    public Vector3 EffectPosition
+    {
+        get { return new Vector3(effect_x, effect_y, effect_z); }
+    }
 
-    public Skill(int _slotIndex, int _index, int _prevIndex , Define.SkillType _type, string _name, string _explain, List<Define.Stat> _stats, List<float> _ratios , float _time)
+
+    public Skill(int _slotIndex, int _index, int _prevIndex, Define.SkillType _type, string _name, string _explain, List<Define.Stat> _stats, List<float> _ratios, float _time
+                 , string parentName, float x, float y, float z)
     {
         slotIndex = _slotIndex;
         index = _index;
@@ -52,6 +61,14 @@ public class Skill
         stats = _stats;
         ratios = _ratios;
         time = _time;
+
+        tf = GameDataManager.player.transform.Find(parentName);
+        if (tf == null)
+            tf = GameDataManager.player.transform;
+
+        effect_x = x;
+        effect_y = y;
+        effect_z = z;
     }
 
     public static void UseSkill(Skill skill)
@@ -67,7 +84,49 @@ public class Skill
                 break;
             case Define.SkillType.Channeling:
                 break;
+            case Define.SkillType.Enchant:
+                Enchant(skill);
+                break;
         }
+    }
+
+    public static IEnumerator Enchant(Skill skill)
+    {
+        if (skill.buff)
+            yield return null;
+
+        skill.buff = true;
+
+        GameDataManager.player.dotDmg = (int)skill.ratios[0];
+        GameDataManager.player.dotTime = skill.time;
+
+        switch (skill.stats[0])
+        {
+            case Define.Stat.FIRE:
+                GameDataManager.player.dotType = Define.DOTType.BURN;
+                break;
+        }
+
+
+        GameDataManager.player.SkillEffect(skill);
+
+        GameObject go = Managers.Instantiate(Resources.Load($"SkillParticle/{skill.Index}") as GameObject, skill.tf);
+        go.transform.localPosition = skill.EffectPosition;
+
+        yield return new WaitForSeconds(skill.time);
+        DeEnchant(skill);
+
+        go.GetComponent<ParticleSystem>().Stop();
+
+        Managers.Destroy(go, 10f);
+    }
+    public static void DeEnchant(Skill skill)
+    {
+        skill.buff = false;
+
+        GameDataManager.player.dotDmg = 0;
+        GameDataManager.player.dotTime = 0;
+        GameDataManager.player.dotType = Define.DOTType.NONE;
     }
 
     public static IEnumerator BuffSkill(Skill skill)
@@ -114,8 +173,15 @@ public class Skill
 
         GameDataManager.player.SkillEffect(skill);
 
+        GameObject go = Managers.Instantiate(Resources.Load($"SkillParticle/{skill.Index}") as GameObject, skill.tf);
+        go.transform.localPosition = skill.EffectPosition;
+
         yield return new WaitForSeconds(skill.time);
         CancleBuffSkill(skill);
+
+        go.GetComponent<ParticleSystem>().Stop();
+
+        Managers.Destroy(go, 10f);
     }
 
     public static void CancleBuffSkill(Skill skill)

@@ -6,7 +6,11 @@ public class DotDamage : MonoBehaviour
 {
     MyStat stat;
 
+    Define.DOTType type = Define.DOTType.NONE;
+
     List<Material> material = new List<Material>();
+    Color color;
+    Color defaultColor;
 
     float elapsedTime = 0f;
     float dmgElapsed = 0f;
@@ -16,7 +20,8 @@ public class DotDamage : MonoBehaviour
 
     private void Awake()
     {
-        stat = GetComponent<Player>().myStat;
+        if(GetComponent<Player>() != null)
+            stat = GetComponent<Player>().myStat;
 
         if(stat == null)
             stat = GetComponent<Monster>().myStat;
@@ -27,27 +32,40 @@ public class DotDamage : MonoBehaviour
         {
             material.Add(renderers[i].material);
         }
-
-        Init(10, 5);
     }
 
     private void OnDisable()
     {
         for (int i = 0; i < material.Count; i++)
         {
-            material[i].color = Color.white;
+            material[i].color = defaultColor;
         }
     }
 
-    public void Init(int _dmg, float _time, float _dmgTime = 5f)
+    public void Init(int _dmg, float _time, Define.DOTType _type , float _dmgTime = 5f)
     {
+        type = _type;
         dmg = _dmg;
         time = _time;
         dmgTime = _dmgTime;
 
+        switch (type)
+        {
+            case Define.DOTType.NONE:
+                color = Color.white;
+                break;
+            case Define.DOTType.BURN:
+                color = Color.red;
+                break;
+            case Define.DOTType.POISON:
+                color = Color.green;
+                break;
+        }
+
         for (int i = 0; i < material.Count; i++)
         {
-            material[i].color = Color.red;
+            defaultColor = material[i].color;
+            material[i].color = color;
         }
     }
 
@@ -57,12 +75,15 @@ public class DotDamage : MonoBehaviour
 
         if(dmgElapsed > dmgTime)
         {
-            elapsedTime = dmgElapsed;
+            elapsedTime += dmgElapsed;
             dmgElapsed = 0f;
 
             stat.currHP -= dmg;
 
-            if(elapsedTime > time)
+            GameObject go = Instantiate(Resources.Load($"DOTParticle/{type.ToString()}") as GameObject, transform);
+            Destroy(go, 1.5f);
+
+            if(elapsedTime >= time)
             {
                 Destroy(this);
             }

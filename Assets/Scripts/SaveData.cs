@@ -159,10 +159,17 @@ public class SaveData : MonoBehaviour
 
     public void LoadFunc()
     {
+        string name = GameObject.FindObjectOfType<InputField>().text;
+
+        if (String.IsNullOrEmpty(name))
+        {
+            return;
+        }
+
         if (File.Exists(Application.persistentDataPath + "/" + "SaveData/SaveFile.txt"))
         {
             text.text = "파일을 찾았습니다.";
-            StartCoroutine("Load");
+            StartCoroutine(Load(name));
         }
         else
         {
@@ -186,7 +193,7 @@ public class SaveData : MonoBehaviour
         }
     }
 
-    IEnumerator Load()
+    IEnumerator Load(string _name)
     {
         DontDestroyOnLoad(gameObject);
 
@@ -241,6 +248,7 @@ public class SaveData : MonoBehaviour
                         {
                             _player.myStat.Level = int.Parse(data[1]);
                             _player.transform.position = new Vector3(float.Parse(data[18]), float.Parse(data[19]), float.Parse(data[20]));
+                            _player.myStat.Name = _name;
                             yield break;
                         }
                         else

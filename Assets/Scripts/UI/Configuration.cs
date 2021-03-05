@@ -6,19 +6,20 @@ using UnityEngine.UI;
 public class Configuration : MonoBehaviour
 {
     [SerializeField]
-    Slider bgmSlider;
+    public Slider bgmSlider;
     [SerializeField]
-    Slider sfxSlider;
+    public Slider sfxSlider;
 
     private void Start()
     {
-        bgmSlider.value = Managers.Sound.BGMVol;
-        sfxSlider.value = Managers.Sound.SFXVol;
+        bgmSlider.value = SoundManager.BGMVol;
+        sfxSlider.value = SoundManager.SFXVol;
     }
 
     private void Update()
     {
         Managers.Sound.BGMSource.volume = bgmSlider.value;
-        Managers.Sound.SFXVol = sfxSlider.value;
+        SoundManager.SFXVol = sfxSlider.value;
+        SoundManager.BGMVol = bgmSlider.value;
     }
 }

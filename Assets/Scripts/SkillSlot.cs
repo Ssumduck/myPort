@@ -32,7 +32,23 @@ public class SkillSlot : MonoBehaviour, IPointerClickHandler
         if (skill == null)
             return;
 
-        if(!skill.Buff)
-            StartCoroutine(Skill.BuffSkill(skill));
+        if (!skill.Buff)
+        {
+            switch (skill.type)
+            {
+                case Define.SkillType.Buff:
+                    StartCoroutine(Skill.BuffSkill(skill));
+                    break;
+                case Define.SkillType.Active:
+                    break;
+                case Define.SkillType.Passive:
+                    break;
+                case Define.SkillType.Channeling:
+                    break;
+                case Define.SkillType.Enchant:
+                    StartCoroutine(Skill.Enchant(skill));
+                    break;
+            }
+        }
     }
 }

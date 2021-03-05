@@ -71,20 +71,29 @@ public class Tooltip : MonoBehaviour
                 data.Add(skill.Name);
                 data.Add(skill.Explain);
                 data.Add(skill.Type);
+                applyTxt.text = "배우기";
                 btn0.onClick.AddListener(() => SkillUtil.SkillLevelUp(skill));
                 break;
             case Define.TooltipType.DUNGEON:
                 data.Add("보스 입장");
                 data.Add("보스방에 입장하시겠습니까?");
-                data.Add("TYPE");
+                data.Add("");
                 applyTxt.text = "입장";
                 btn0.onClick.AddListener(() => GameObject.FindObjectOfType<BossContent>().BossRoom());
                 transform.localPosition = Vector3.zero;
+                break;
+            case Define.TooltipType.DIE:
+                data.Add("캐릭터가 사망하였습니다.");
+                data.Add("부활 하시겠습니까?");
+                data.Add("");
+                applyTxt.text = "부활";
+                btn0.onClick.AddListener(() => GameDataManager.player.Revive());
                 break;
         }
 
         nameTxt.text = data[0];
         explainTxt.text = data[1];
+        explainTxt.alignment = TextAnchor.MiddleCenter;
         typeTxt.text = data[2];
 
         btn1.onClick.AddListener(() => Destroy(gameObject));

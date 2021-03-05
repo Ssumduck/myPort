@@ -2,15 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    Transform canvas;
+    [SerializeField]
+    Transform RevivePos;
     [SerializeField]
     GameObject targetUI;
 
     [SerializeField]
     Stat stat;
-    
+
     public MyStat myStat;
 
     [SerializeField]
@@ -26,13 +31,18 @@ public class Player : MonoBehaviour
 
     CharacterController characterController;
     [SerializeField]
-    Transform textTransform;
+    public Transform textTransform;
 
+    [SerializeField]
+    bool lockOn = false;
     bool alive = true;
     public bool isGround = true;
     public bool canMove = true;
     public bool defence = false;
     bool atkCheck = false;
+
+    public int dotDmg;
+    public float dotTime;
 
     float gravity = 9.81f;
 
@@ -42,12 +52,14 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     Define.PlayerState state = Define.PlayerState.Idle;
+    public Define.DOTType dotType = Define.DOTType.NONE;
 
     public Monster attackTarget;
     public NPC nearNPC;
 
     public List<Quest> myQuest = new List<Quest>();
 
+    public bool LockOn { get { return lockOn; } set { lockOn = value; } }
     public Animator Anim { get { return anim; } }
     public Define.PlayerState State { get { return state; } set { state = value; } }
     public Dictionary<Define.EquipmentType, Item> Equipment { get { return equipment; } set { equipment = value; } }
@@ -69,6 +81,8 @@ public class Player : MonoBehaviour
         if (!alive)
             return;
 
+        if(myStat.currHP <= 0) { Die(); return; }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameObject go = UIButton.uiQueue.Dequeue();
@@ -88,10 +102,44 @@ public class Player : MonoBehaviour
             case Define.PlayerState.Attack:
                 Attack();
                 break;
-            case Define.PlayerState.Die:
-                Die();
-                break;
         }
+    }
+
+    public void Revive()
+    {
+        if(SceneManager.GetActiveScene().name != "Game")
+        {
+            LoadSceneManager.Loading("Game");
+            Revive();
+        }
+
+        alive = true;
+        anim.SetTrigger("Revive");
+        RevivePos = GameObject.Find("RevivePos").transform;
+
+        transform.position = RevivePos.position;
+        myStat.currHP = myStat.HP;
+    }
+
+    void Die()
+    {
+        Monster[] monsters = GameObject.FindObjectsOfType<Monster>();
+
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].State = Define.MonsterState.Idle;
+            monsters[i].AttackTarget = null;
+        }
+
+        alive = false;
+        anim.SetTrigger("Die");
+
+        Invoke("DieTooltip", 0.5f);
+    }
+
+    void DieTooltip()
+    {
+        Managers.Tooltip.ToolTipCreate(canvas, Define.TooltipType.DIE);
     }
 
     void Idle()
@@ -109,12 +157,8 @@ public class Player : MonoBehaviour
         //transform.position += Joystick.moveVec;
         Joystick.moveVec.y -= gravity * Time.deltaTime;
         characterController.Move(Joystick.moveVec);
-        anim.SetBool("Move", true);
-    }
 
-    void Die()
-    {
-        alive = false;
+        anim.SetBool("Move", true);
     }
 
     void AttackFunc()
@@ -127,17 +171,20 @@ public class Player : MonoBehaviour
 
         int rand = UnityEngine.Random.Range(0, 100);
 
-        if(rand > 80)
+        if (rand > 80)
             Managers.Sound.SFXPlay($"{attackTarget.myStat.Name}_Hit");
 
-        attackTarget.SendMessage("Hit", this);
+        attackTarget.Hit(this, dotType);
         targetUI.SetActive(true);
     }
 
     void Attack()
     {
-        attackTarget = null;
-        GetAttackTarget();
+        if (!lockOn)
+        {
+            attackTarget = null;
+            GetAttackTarget();
+        }
 
         if (atkCheck)
         {
@@ -153,7 +200,7 @@ public class Player : MonoBehaviour
         {
             atkCheck = true;
             canMove = false;
-            if(attackTarget != null)
+            if (attackTarget != null)
                 transform.LookAt(attackTarget.transform.position);
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 anim.SetTrigger("Attack");
@@ -201,18 +248,36 @@ public class Player : MonoBehaviour
 
         myStat.currHP -= dmg;
         anim.SetTrigger("Hit");
-        FloatingText.DamageText(textTransform, dmg.ToString(), Color.red);
+        FloatingText.DamageText(transform, dmg.ToString(), Color.red);
+    }
+
+    public void Hit(Monster monster, Define.DOTType type)
+    {
+        Hit(monster);
+
+        if (type == Define.DOTType.NONE)
+            return;
+        DotDamage dot;
+
+        dot = GetComponent<DotDamage>();
+        if (dot == null)
+            dot = gameObject.AddComponent<DotDamage>();
+
+        dot.Init(monster.dotDmg, monster.dotTime, type);
     }
 
     public void LevelUp()
     {
-        if(myStat.currEXP >= myStat.EXP)
+        if (myStat.currEXP >= myStat.EXP)
         {
             myStat.Level += 1;
             myStat.currEXP -= myStat.EXP;
             myStat.statPoint += Managers.Data.EXPData(myStat.Level - 1).Item2;
             myStat.skillPoint += 1;
             myStat.EXP = Managers.Data.EXPData(myStat.Level).Item1;
+            GameObject effect = Instantiate(Resources.Load("Particle/LevelUP") as GameObject, transform);
+            Managers.Sound.SFXPlay("LevelUP");
+            Destroy(effect, 3f);
         }
     }
 
@@ -242,7 +307,9 @@ public class Player : MonoBehaviour
     public void SkillEffect(Skill skill)
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            anim.SetTrigger("BuffSkill");
+        {
+            anim.SetTrigger($"BuffSkill");
+        }
         else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walking"))
         {
             anim.SetTrigger("BuffSkill");

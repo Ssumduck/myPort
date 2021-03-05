@@ -20,7 +20,7 @@ public class ToolTipManager
 
     public void ToolTipCreate(Transform tf, Define.TooltipType type, Item item = null, Skill skill = null)
     {
-        Tooltip tooltip = Managers.Instantiate(Managers.Tooltip.go, tf.parent.parent).GetComponent<Tooltip>();
+        Tooltip tooltip = Managers.Instantiate(Managers.Tooltip.go).transform.GetComponentInChildren<Tooltip>();
         if(tooltip.transform.root.GetComponent<Canvas>() == null)
         {
             canvas = Managers.Instantiate(canvas);

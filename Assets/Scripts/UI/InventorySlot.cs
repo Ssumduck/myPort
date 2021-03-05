@@ -26,15 +26,13 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void Init()
     {
-        countText = transform.GetComponentInChildren<Text>();
-        gr = GameObject.Find("UI").GetComponent<GraphicRaycaster>();
-        slot = transform.Find("ItemIcon").GetComponent<Image>();
     }
 
     public void SlotInit(Item item)
     {
-        if (slot == null)
-            Init();
+        countText = transform.GetComponentInChildren<Text>();
+        gr = GameObject.Find("UI").GetComponent<GraphicRaycaster>();
+        slot = transform.Find("ItemIcon").GetComponent<Image>();
         Sprite sprite;
         if(item == null)
         {
@@ -83,7 +81,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 break;
             }
         }
-        Transform tf = invenSlot.transform.GetChild(1);
+        Transform tf = invenSlot.transform.Find("ItemIcon");
         tf.SetParent(startParent);
         slot.gameObject.transform.SetParent(endParent);
 
@@ -99,10 +97,15 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (slotItem == null)
+        if (string.IsNullOrEmpty(slotItem.Name))
             return;
 
-        //ItemUtil.ItemInfo(slotItem, popup, transform);
-        Managers.Tooltip.ToolTipCreate(transform, Define.TooltipType.ITEM, slotItem);
+        if(GameObject.FindObjectOfType<Tooltip>() == null)
+            Managers.Tooltip.ToolTipCreate(transform, Define.TooltipType.ITEM, slotItem);
+        else
+        {
+            Destroy(GameObject.FindObjectOfType<Tooltip>().gameObject);
+            Managers.Tooltip.ToolTipCreate(transform, Define.TooltipType.ITEM, slotItem);
+        }
     }
 }

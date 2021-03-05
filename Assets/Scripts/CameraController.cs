@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class CameraController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class CameraController : MonoBehaviour
 {
-    bool ui = false;
+    [SerializeField]
+    public bool ui = false;
     Vector3 prevAngle;
     Transform arm;
     GameObject target;
@@ -14,6 +15,18 @@ public class CameraController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         target = GameObject.FindObjectOfType<Player>().gameObject;
         arm = transform.root;
+
+        Canvas[] canvas = GameObject.FindObjectsOfType<Canvas>();
+
+        for (int i = 0; i < canvas.Length; i++)
+        {
+            Image[] img = canvas[i].transform.GetComponentsInChildren<Image>();
+
+            for (int j = 0; j < img.Length; j++)
+            {
+                img[j].gameObject.AddComponent<UICheck>();
+            }
+        }
     }
 
     private void Update()
@@ -49,11 +62,12 @@ public class CameraController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                     Debug.Log(deltaX);
 
-                    if(deltaX < 180f)
+                    if (deltaX < 180f)
                     {
                         deltaX = Mathf.Clamp(deltaX, -1f, 70f);
                     }
-                    else{
+                    else
+                    {
                         deltaX = Mathf.Clamp(deltaX, 347f, 361f);
                     }
 
@@ -70,12 +84,8 @@ public class CameraController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void UICheck()
     {
-        ui = EventSystem.current.IsPointerOverGameObject();
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
+        ui = true;
     }
 }

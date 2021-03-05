@@ -21,6 +21,10 @@ public class Status : MonoBehaviour
     Text lukText;
     [SerializeField]
     Text statPointText;
+    [SerializeField]
+    Text atkText;
+    [SerializeField]
+    Text defText;
 
     [SerializeField]
     Button strBtn;
@@ -54,6 +58,13 @@ public class Status : MonoBehaviour
         intText.text = $"지력 : {player.myStat.INT}";
         lukText.text = $"행운 : {player.myStat.LUK}";
         statPointText.text = $"스텟 포인트 : {player.myStat.statPoint}";
+        atkText.text = $"공격력 : {player.myStat.AD}";
+        defText.text = $"방어력 : {player.myStat.DEF}";
+
+        if (player.Equipment.ContainsKey(Define.EquipmentType.Weapon))
+            atkText.text = $"공격력 : {player.myStat.AD} ( {player.myStat.AD - player.Equipment[Define.EquipmentType.Weapon].AD} + {player.Equipment[Define.EquipmentType.Weapon].AD} )";
+        if(player.Equipment.ContainsKey(Define.EquipmentType.Armor))
+            defText.text = $"방어력 : {player.myStat.AD} ( {player.myStat.DEF - player.Equipment[Define.EquipmentType.Armor].DEF} + {player.Equipment[Define.EquipmentType.Armor].DEF} )";
     }
 
     public void StatUp(Player player, int index)
