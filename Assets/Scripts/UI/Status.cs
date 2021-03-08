@@ -77,9 +77,11 @@ public class Status : MonoBehaviour
             {
                 case 0:
                     player.myStat.STR += 1;
+                    player.myStat.AD += 1;
                     break;
                 case 1:
                     player.myStat.DEX += 1;
+                    player.myStat.DEF += 1;
                     break;
                 case 2:
                     player.myStat.INT += 1;

@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f523503b0d11641aa575a38c5c7c9a, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  name: "\uC8FC\uC778\uACF5"
+  spr: {fileID: 0}
+  myName: 
+  index: 0
   lv: 1
   gold: 500
+  currhp: 0
   hp: 50
   hpRecovery: 1
   mp: 50
+  currmp: 0
   mpRecovery: 1
   str: 10
   dex: 10
@@ -29,7 +33,7 @@ MonoBehaviour:
   mr: 1
   exp: 50
   currexp: 0
-  statPoint: 0
+  statPoint: 300
   skillPoint: 0
   atktime: 3
   atkDistance: 3

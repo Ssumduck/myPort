@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +14,9 @@ public class GameDataManager
     public List<Item> equipItem = new List<Item>();
     public List<Quest> quests = new List<Quest>();
 
+    public Dictionary<int, Tuple<List<int>, List<int>>> dropItem = new Dictionary<int, Tuple<List<int>, List<int>>>();
+
+
     public void Init()
     {
         if (player == null)
@@ -25,6 +27,7 @@ public class GameDataManager
             QuestInit();
             ShopDataInit();
             SkillDataInit();
+            DropDataInit();
         }
     }
 
@@ -154,6 +157,33 @@ public class GameDataManager
             SkillSlotData.Add(skill.SlotIndex, skill);
             player.mySkill.Add(skill, 0);
             skills.Add(skill);
+        }
+    }
+
+    void DropDataInit()
+    {
+        List<int> data1 = new List<int>(), data2 = new List<int>();
+        TextAsset asset = Resources.Load<TextAsset>("Data/DropItem");
+
+        string[] row = asset.text.Split('\n');
+
+        for (int i = 1; i < row.Length - 1; i++)
+        {
+            string[] data = row[i].Split('\t');
+
+            string[] itemdata = data[1].Split('|');
+            string[] ratedata = data[2].Split('|');
+
+            for (int j = 0; j < itemdata.Length; j++)
+            {
+                int a = int.Parse(itemdata[j]);
+                int b = int.Parse(ratedata[j]);
+
+                data1.Add(a);
+                data2.Add(b);
+            }
+            Tuple<List<int>, List<int>> tuple = new Tuple<List<int>, List<int>>(data1, data2);
+            dropItem.Add(int.Parse(data[0]), tuple);
         }
     }
 

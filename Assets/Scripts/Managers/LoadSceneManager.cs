@@ -22,7 +22,8 @@ public class LoadSceneManager : MonoBehaviour
     {
         if (go == null)
             Init();
-        
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 1f;
         CoroutineManager.Instance.MyStartCoroutine(LoadingScene(sceneName));
     }
 

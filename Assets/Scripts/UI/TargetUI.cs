@@ -29,6 +29,8 @@ public class TargetUI : MonoBehaviour
 
     private void Update()
     {
+        if (GameDataManager.player.attackTarget == null)
+            gameObject.SetActive(false);
         targetIcon.sprite = monster.myStat.spr;
         nameTxt.text = $"LV.{monster.myStat.Level} {monster.myStat.Name}";
         hpSlider.value = (float)monster.myStat.currHP / (float)monster.myStat.HP;

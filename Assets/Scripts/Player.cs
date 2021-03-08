@@ -155,8 +155,12 @@ public class Player : MonoBehaviour
         //    return;
         //}
         //transform.position += Joystick.moveVec;
-        Joystick.moveVec.y -= gravity * Time.deltaTime;
+        if(characterController.collisionFlags != CollisionFlags.Below)
+            Joystick.moveVec.y -= gravity * Time.deltaTime;
+
         characterController.Move(Joystick.moveVec);
+
+        Debug.Log(Joystick.moveVec);
 
         anim.SetBool("Move", true);
     }
@@ -247,8 +251,10 @@ public class Player : MonoBehaviour
             dmg = 1;
 
         myStat.currHP -= dmg;
-        anim.SetTrigger("Hit");
+        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            anim.SetTrigger("Hit");
         FloatingText.DamageText(transform, dmg.ToString(), Color.red);
+        BOSSROOM.Hit();
     }
 
     public void Hit(Monster monster, Define.DOTType type)
@@ -268,6 +274,7 @@ public class Player : MonoBehaviour
 
     public void LevelUp()
     {
+        attackTarget = null;
         if (myStat.currEXP >= myStat.EXP)
         {
             myStat.Level += 1;

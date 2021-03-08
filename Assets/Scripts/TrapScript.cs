@@ -32,5 +32,7 @@ public class TrapScript : MonoBehaviour
                 }
                 break;
         }
+
+        Destroy(gameObject);
     }
 }

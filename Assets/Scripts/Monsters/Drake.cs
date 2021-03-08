@@ -19,9 +19,6 @@ public class Drake : Monster
     protected override void Idle()
     {
         anim.SetBool("Move", false);
-
-        if (attackTarget != null)
-            state = Define.MonsterState.Trace;
     }
 
     protected override void Trace()
@@ -101,5 +98,15 @@ public class Drake : Monster
         channeling = false;
 
         state = Define.MonsterState.Trace;
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        if (!BOSSROOM.clear)
+        {
+            BOSSROOM.clear = true;
+            BOSSROOM.BossClear();
+        }
     }
 }

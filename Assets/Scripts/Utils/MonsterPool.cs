@@ -46,6 +46,9 @@ public class MonsterPool : MonoBehaviour
 
     public static void DieMonster(Monster monster)
     {
+        if (instance == null)
+            return;
+
         monster.gameObject.SetActive(false);
         monster.transform.SetParent(instance.transform);
         monster.transform.localPosition = Vector3.zero;

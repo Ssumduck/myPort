@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SkillSlot : MonoBehaviour, IPointerClickHandler
+public class SkillSlot : MonoBehaviour
 {
 
     public Sprite defaultSpr;
@@ -27,7 +27,7 @@ public class SkillSlot : MonoBehaviour, IPointerClickHandler
         else { slotimg.sprite = Resources.Load<Sprite>($"Image/SkillIcon/{skill.Index}"); slotimg.GetComponent<RectTransform>().sizeDelta = new Vector2(78, 75); }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void UseSkill()
     {
         if (skill == null)
             return;

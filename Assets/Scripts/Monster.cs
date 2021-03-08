@@ -46,6 +46,7 @@ public class Monster : MonoBehaviour
 
     private void OnEnable()
     {
+        attackTarget = null;
         myStat = new MyStat(stat);
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
@@ -173,7 +174,7 @@ public class Monster : MonoBehaviour
         isAlive = true;
     }
 
-    void Die()
+    protected virtual void Die()
     {
         if (!dieTrigger)
         {
@@ -188,6 +189,28 @@ public class Monster : MonoBehaviour
             {
                 MonsterPool.DieMonster(this);
                 attackTarget.LevelUp();
+            }
+        }
+        DropItem();
+    }
+
+    void DropItem()
+    {
+        if (!Managers.Data.dropItem.ContainsKey(myStat.index))
+            return;
+
+        for (int i = 0; i < Managers.Data.dropItem[myStat.index].Item1.Count; i++)
+        {
+            int itemRate = Managers.Data.dropItem[myStat.index].Item2[i];
+
+            int rand = Random.Range(1, 101);
+
+            if(rand < itemRate)
+            {
+                int itemIndex = Managers.Data.dropItem[myStat.index].Item1[i];
+
+                ItemUtil.GetItem(Managers.Data.ItemData[itemIndex]);
+                SystemText.SystemMessage($"{Managers.Data.ItemData[itemIndex].Name}을 획득하였습니다.", Color.white);
             }
         }
     }

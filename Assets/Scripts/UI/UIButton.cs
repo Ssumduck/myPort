@@ -22,7 +22,7 @@ public class UIButton : MonoBehaviour
     {
         uiQueue.Enqueue(go);
         go.SetActive(true);
-        go.transform.SetAsLastSibling();
+        go.transform.SetSiblingIndex(go.transform.parent.childCount - 2);
     }
 
     public void ApplicationQuit()

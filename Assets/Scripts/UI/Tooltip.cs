@@ -88,12 +88,13 @@ public class Tooltip : MonoBehaviour
                 data.Add("");
                 applyTxt.text = "부활";
                 btn0.onClick.AddListener(() => GameDataManager.player.Revive());
+                explainTxt.alignment = TextAnchor.MiddleCenter;
+                explainTxt.transform.localPosition = Vector3.zero;
                 break;
         }
 
         nameTxt.text = data[0];
         explainTxt.text = data[1];
-        explainTxt.alignment = TextAnchor.MiddleCenter;
         typeTxt.text = data[2];
 
         btn1.onClick.AddListener(() => Destroy(gameObject));

@@ -104,51 +104,6 @@ public class ItemUtil
         return index;
     }
 
-    //public static void ItemInfo(Item item, GameObject popup, Transform slot)
-    //{
-    //    popup.SetActive(true);
-    //    popup.transform.position = new Vector2(slot.position.x + 300, slot.position.y - 165);
-
-    //    Text nameTxt = popup.transform.GetChild(0).GetComponent<Text>();
-    //    Text typeTxt = popup.transform.GetChild(1).GetComponent<Text>();
-    //    Text explainTxt = popup.transform.GetChild(2).GetComponent<Text>();
-    //    Button btn = popup.transform.GetChild(3).GetComponent<Button>();
-
-    //    nameTxt.text = item.Name;
-    //    explainTxt.text = item.Explain + $"({item.Price})";
-
-    //    InventorySlot invenSlot = slot.GetComponent<InventorySlot>();
-
-    //    switch (item.Type)
-    //    {
-    //        case Define.ItemType.Equipment:
-    //            typeTxt.text = "장비 아이템";
-    //            btn.onClick.RemoveAllListeners();
-    //            btn.onClick.AddListener(() => UseItem(item, invenSlot, popup));
-    //            break;
-    //        case Define.ItemType.Use:
-    //            typeTxt.text = "소비 아이템";
-    //            btn.onClick.RemoveAllListeners();
-    //            btn.onClick.AddListener(() => UseItem(item, invenSlot, popup));
-    //            break;
-    //        case Define.ItemType.ETC:
-    //            typeTxt.text = "기타 아이템";
-    //            btn.onClick.RemoveAllListeners();
-    //            btn.onClick.AddListener(() => UseItem(item, invenSlot, popup));
-    //            break;
-    //        case Define.ItemType.Quest:
-    //            typeTxt.text = "퀘스트 아이템";
-    //            btn.onClick.RemoveAllListeners();
-    //            btn.onClick.AddListener(() => UseItem(item, invenSlot, popup));
-    //            break;
-    //        case Define.ItemType.BUY:
-    //            btn = popup.transform.GetChild(3).GetComponent<Button>();
-    //            btn.onClick.RemoveAllListeners();
-    //            btn.onClick.AddListener(() => BuyItem(item));
-    //            break;
-    //    }
-    //}
-
     public static void BuyItem(Item _item)
     {
         if (player == null)
