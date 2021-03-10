@@ -7,13 +7,16 @@ public class SystemText : MonoBehaviour
 {
     static Vector3 startVec = new Vector3(0, -215);
     [SerializeField]
-    static Text[] texts;
+    public static List<Text> texts = new List<Text>();
 
     private void Awake()
     {
-        texts = GetComponentsInChildren<Text>();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            texts.Add(transform.GetChild(i).GetComponent<Text>());
+        }
 
-        for (int i = 0; i < texts.Length; i++)
+        for (int i = 0; i < texts.Count; i++)
         {
             texts[i].gameObject.SetActive(false);
         }
@@ -35,7 +38,7 @@ public class SystemText : MonoBehaviour
 
     static Text TextReturn()
     {
-        for (int i = 0; i < texts.Length; i++)
+        for (int i = 0; i < texts.Count; i++)
         {
             if (!texts[i].gameObject.activeSelf)
                 return texts[i];

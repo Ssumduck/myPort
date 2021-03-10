@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour
 {
+    public EquipmentSlot equipmentSlot;
     public InventorySlot invenSlot;
     public Define.TooltipType type = Define.TooltipType.NONE;
 
@@ -90,6 +91,13 @@ public class Tooltip : MonoBehaviour
                 btn0.onClick.AddListener(() => GameDataManager.player.Revive());
                 explainTxt.alignment = TextAnchor.MiddleCenter;
                 explainTxt.transform.localPosition = Vector3.zero;
+                break;
+            case Define.TooltipType.EQUIPMENT:
+                data.Add(item.Name);
+                data.Add(item.Explain + $"({item.Price})");
+                data.Add(Managers.Data.ItemData[item.Index].Type.ToString());
+                applyTxt.text = "해제";
+                btn0.onClick.AddListener(() => equipmentSlot.UnEquipment(equipmentSlot.Type));
                 break;
         }
 

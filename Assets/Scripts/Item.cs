@@ -148,6 +148,8 @@ public class Item
         _item.name = item.name;
         _item.explain = item.explain;
         _item.price = item.price;
+        _item.currHP = item.currHP;
+        _item.currMP = item.currMP;
         _item.HP = item.HP;
         _item.HPRecovery = item.HPRecovery;
         _item.MP = item.MP;

@@ -121,6 +121,7 @@ public class Define
     {
         NONE,
         ITEM,
+        EQUIPMENT,
         SKILL,
         DUNGEON,
         DIE,

@@ -84,12 +84,18 @@ public class SkillUtil
             return;
         }
 
+        if (GameDataManager.player.mySkill[skill] != 0)
+        {
+            Managers.Tooltip.SystemToolTip("스킬 오류", "해당 스킬은 이미 배웠습니다.");
+        }
+
         int level = GameDataManager.player.mySkill[skill] + 1;
 
         GameDataManager.player.myStat.skillPoint -= 1;
         GameDataManager.player.mySkill[skill] = level;
         SkillUISlot slot = SkillUISlotReturn(skill);
         slot.SlotImgInit();
+        GameObject.FindObjectOfType<SkillUI>().Init();
     }
 
     public static void UseSkill(Skill skill)

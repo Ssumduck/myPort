@@ -13,6 +13,8 @@ public class EquipmentSlot : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     Define.EquipmentType TYPE = Define.EquipmentType.NONE;
 
+    public Define.EquipmentType Type { get { return TYPE; } }
+
     void Init()
     {
         player = GameObject.FindObjectOfType<Player>();
@@ -27,15 +29,10 @@ public class EquipmentSlot : MonoBehaviour, IPointerClickHandler
         if (!player.Equipment.ContainsKey(TYPE))
             return;
 
-        popup.SetActive(true);
-        popup.transform.position = new Vector2(transform.position.x + 300, transform.position.y - 165);
-
-        Button btn = popup.transform.GetChild(3).GetComponent<Button>();
-        btn.onClick.RemoveAllListeners();
-        btn.onClick.AddListener(() => UnEquipment(TYPE));
+        Managers.Tooltip.ToolTipCreate(transform, Define.TooltipType.EQUIPMENT, player.Equipment[TYPE]);
     }
 
-    void UnEquipment(Define.EquipmentType type)
+    public void UnEquipment(Define.EquipmentType type)
     {
         Item item = player.Equipment[type];
 

@@ -47,6 +47,10 @@ public class ToolTipManager
             case Define.TooltipType.SKILL:
                 tooltip.skill = skill;
                 break;
+            case Define.TooltipType.EQUIPMENT:
+                tooltip.item = item;
+                tooltip.equipmentSlot = tf.GetComponent<EquipmentSlot>();
+                break;
         }
         tooltip.Init();
         tooltip.transform.SetAsLastSibling();

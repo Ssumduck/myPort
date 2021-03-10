@@ -8,8 +8,13 @@ public class SkillUI : MonoBehaviour
     [SerializeField]
     Text skillPointText;
 
-    private void OnEnable()
+    public void Init()
     {
         skillPointText.text = $"스킬 포인트 : {GameDataManager.player.myStat.skillPoint.ToString()}";
+    }
+
+    private void OnEnable()
+    {
+        Init();
     }
 }

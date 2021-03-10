@@ -18,24 +18,27 @@ public class ShopUI : MonoBehaviour
 
     public void Init(NPC npc)
     {
-        gameObject.SetActive(true);
-        for (int i = 0; i < npc.shopItem.Count; i++)
+        if (!gameObject.activeSelf)
         {
-            slots[i].Init(npc.shopItem[i]);
+            gameObject.SetActive(true);
+            for (int i = 0; i < npc.shopItem.Count; i++)
+            {
+                slots[i].Init(npc.shopItem[i]);
+            }
         }
     }
 
-    private void OnEnable()
+    public void GoldText()
     {
         string data = player.myStat.Gold.ToString();
 
-        if(data.Length > 3)
+        if (data.Length > 3)
         {
             string temp = new string(data.ToCharArray().Reverse().ToArray());
 
             for (int i = temp.Length - 1; i > 1; i--)
             {
-                if(i % 3 == 0)
+                if (i % 3 == 0)
                 {
                     StringBuilder str = new StringBuilder(temp);
                     str.Insert(i, ",");
@@ -46,6 +49,11 @@ public class ShopUI : MonoBehaviour
         }
 
         goldText.text = data;
+    }
+
+    private void OnEnable()
+    {
+        GoldText();
     }
 
     public void Close()

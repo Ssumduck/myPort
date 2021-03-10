@@ -27,6 +27,11 @@ public class TargetUI : MonoBehaviour
             Init();
     }
 
+    private void OnDisable()
+    {
+        check = false;
+    }
+
     private void Update()
     {
         if (GameDataManager.player.attackTarget == null)

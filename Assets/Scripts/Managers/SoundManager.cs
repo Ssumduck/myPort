@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static float BGMVol = 0f;
+    public static float BGMVol = 1f;
     public static float SFXVol = 1f;
 
     public AudioSource BGMSource;

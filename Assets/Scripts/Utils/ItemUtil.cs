@@ -114,6 +114,7 @@ public class ItemUtil
             player.myStat.Gold -= item.Price;
             ItemUtil.GetItem(item);
         }
+        GameObject.FindObjectOfType<ShopUI>().GoldText();
     }
 
     public static void ItemUse(Item item, InventorySlot slot)
